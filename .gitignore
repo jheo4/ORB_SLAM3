@@ -47,3 +47,5 @@ cmake-build-debug/
 
 *.pyc
 *.osa
+.clangd
+compile_commands.json
