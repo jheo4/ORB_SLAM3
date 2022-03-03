@@ -13,6 +13,7 @@ Examples/Stereo/stereo_kitti
 Examples/Stereo/stereo_tum_vi
 
 Examples/Monocular-Inertial/mono_inertial_euroc
+Examples/Monocular-Inertial/mono_inertial_test
 Examples/Monocular-Inertial/mono_inertial_tum_vi
 
 Examples/Stereo-Inertial/stereo_inertial_euroc
