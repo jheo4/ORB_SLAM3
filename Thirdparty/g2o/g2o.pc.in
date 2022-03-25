@@ -8,6 +8,6 @@ Description: G2O for ORB SLAM3
 URL: https://github.com/jheo4/ORB_SLAM3
 Version: 2.6
 
-Cflags: -I${includedir} -I${includedir}/Thirdparty
+Cflags: -I${includedir}/ORB_SLAM3 -I${includedir}/ORB_SLAM3/Thirdparty -I@EIGEN3_INCLUDE_DIRS@
 Libs: -lg2o
 

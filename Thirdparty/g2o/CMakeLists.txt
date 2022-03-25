@@ -69,13 +69,8 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${g2o_CXX_FLAGS}")
 SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${g2o_C_FLAGS}")
 
 # Find Eigen3
-SET(EIGEN3_INCLUDE_DIR ${G2O_EIGEN3_INCLUDE})
-FIND_PACKAGE(Eigen3 3.1.0 REQUIRED)
-IF(EIGEN3_FOUND)
-  SET(G2O_EIGEN3_INCLUDE ${EIGEN3_INCLUDE_DIR} CACHE PATH "Directory of Eigen3")
-ELSE(EIGEN3_FOUND)
-  SET(G2O_EIGEN3_INCLUDE "" CACHE PATH "Directory of Eigen3")
-ENDIF(EIGEN3_FOUND)
+find_package(PkgConfig REQUIRED)
+pkg_search_module(EIGEN3 opencv eigen3)
 
 # Generate config.h
 SET(G2O_CXX_COMPILER "${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER}")
@@ -86,7 +81,7 @@ INCLUDE_DIRECTORIES(
 ${g2o_SOURCE_DIR}/core
 ${g2o_SOURCE_DIR}/types
 ${g2o_SOURCE_DIR}/stuff
-${G2O_EIGEN3_INCLUDE})
+${EIGEN3_INCLUDE_DIRS})
 
 # Include the subdirectories
 ADD_LIBRARY(g2o ${G2O_LIB_TYPE}
@@ -178,11 +173,11 @@ g2o/stuff/property.cpp
 g2o/stuff/property.h
 )
 
-install( DIRECTORY ${CMAKE_SOURCE_DIR}/g2o/stuff   DESTINATION ${CMAKE_INSTALL_PREFIX}/include/Thirdparty/g2o/g2o)
-install( DIRECTORY ${CMAKE_SOURCE_DIR}/g2o/core    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/Thirdparty/g2o/g2o)
-install( DIRECTORY ${CMAKE_SOURCE_DIR}/g2o/types   DESTINATION ${CMAKE_INSTALL_PREFIX}/include/Thirdparty/g2o/g2o)
-install( FILES ${CMAKE_SOURCE_DIR}/config.h      DESTINATION ${CMAKE_INSTALL_PREFIX}/include/Thirdparty/g2o)
-install( FILES ${CMAKE_CURRENT_BINARY_DIR}/g2o.pc DESTINATION /usr/local/lib/pkgconfig/)
+install( DIRECTORY ${CMAKE_SOURCE_DIR}/g2o/stuff   DESTINATION ${CMAKE_INSTALL_PREFIX}/include/ORB_SLAM3/Thirdparty/g2o/g2o)
+install( DIRECTORY ${CMAKE_SOURCE_DIR}/g2o/core    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/ORB_SLAM3/Thirdparty/g2o/g2o)
+install( DIRECTORY ${CMAKE_SOURCE_DIR}/g2o/types   DESTINATION ${CMAKE_INSTALL_PREFIX}/include/ORB_SLAM3/Thirdparty/g2o/g2o)
+install( FILES ${CMAKE_SOURCE_DIR}/config.h        DESTINATION ${CMAKE_INSTALL_PREFIX}/include/ORB_SLAM3/Thirdparty/g2o)
+install( FILES ${CMAKE_CURRENT_BINARY_DIR}/g2o.pc  DESTINATION /usr/local/lib/pkgconfig/)
 install( TARGETS g2o ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 
 configure_file("g2o.pc.in" "g2o.pc" @ONLY)
