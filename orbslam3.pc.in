@@ -1,0 +1,13 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+exec_prefix=@CMAKE_INSTALL_PREFIX@
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: ORB SLAM3
+Description: ORB SLAM3
+URL: https://github.com/jheo4/ORB_SLAM3
+Version: 3.0
+
+Cflags: -I${includedir}/ORB_SLAM3 -I${includedir}/ORB_SLAM3/include -I${includedir}/ORB_SLAM3/include/CameraModels -I${includedir}/ORB_SLAM3/Thirdparty
+Libs: -lg2o -lDBoW2 -lORB_SLAM3
+
