@@ -49,20 +49,20 @@ set(ORB_SLAM3_CXX_FLAGS "")
 set(ORB_SLAM3_LINKER_FLAGS "")
 set(ORB_SLAM3_INCLUDE_DIRS "")
 
-list(APPEND ORB_SLAM3_INCLUDE_DIRS -I${EIGEN3_INCLUDE_DIR})
+list(APPEND ORB_SLAM3_INCLUDE_DIRS   ${EIGEN3_INCLUDE_DIR})
 list(APPEND ORB_SLAM3_LINKER_FLAGS   ${EIGEN3_LDFLAGS})
 
 list(APPEND ORB_SLAM3_CXX_FLAGS      ${OPENCV_CXX_FLAGS})
 list(APPEND ORB_SLAM3_LINKER_FLAGS   ${OPENCV_LDFLAGS})
-list(APPEND ORB_SLAM3_INCLUDE_DIRS -I${OPENCV_INCLUDE_DIRS})
+list(APPEND ORB_SLAM3_INCLUDE_DIRS   ${OPENCV_INCLUDE_DIRS})
 
 list(APPEND ORB_SLAM3_CXX_FLAGS      ${G2O_CXX_FLAGS})
 list(APPEND ORB_SLAM3_LINKER_FLAGS   ${G2O_LDFLAGS})
-list(APPEND ORB_SLAM3_INCLUDE_DIRS -I${G2O_INCLUDE_DIRS})
+list(APPEND ORB_SLAM3_INCLUDE_DIRS   ${G2O_INCLUDE_DIRS})
 
 list(APPEND ORB_SLAM3_CXX_FLAGS      ${DBoW_CXX_FLAGS})
 list(APPEND ORB_SLAM3_LINKER_FLAGS   ${DBoW_LDFLAGS})
-list(APPEND ORB_SLAM3_INCLUDE_DIRS -I${DBoW_INCLUDE_DIRS})
+list(APPEND ORB_SLAM3_INCLUDE_DIRS   ${DBoW_INCLUDE_DIRS})
 
 list(APPEND ORB_SLAM3_LINKER_FLAGS -lboost_serialization -lcrypto)
 
@@ -107,37 +107,7 @@ src/CameraModels/KannalaBrandt8.cpp
 src/OptimizableTypes.cpp
 src/MLPnPsolver.cpp
 src/TwoViewReconstruction.cc
-include/System.h
-include/Tracking.h
-include/LocalMapping.h
-include/LoopClosing.h
-include/ORBextractor.h
-include/ORBmatcher.h
-include/FrameDrawer.h
-include/Converter.h
-include/MapPoint.h
-include/KeyFrame.h
-include/Atlas.h
-include/Map.h
-include/MapDrawer.h
-include/Optimizer.h
-include/Frame.h
-include/KeyFrameDatabase.h
-include/Sim3Solver.h
-include/Initializer.h
-include/Viewer.h
-include/ImuTypes.h
-include/G2oTypes.h
-include/CameraModels/GeometricCamera.h
-include/CameraModels/Pinhole.h
-include/CameraModels/KannalaBrandt8.h
-include/OptimizableTypes.h
-include/MLPnPsolver.h
-include/TwoViewReconstruction.h
-include/Config.h
 )
-
-#add_subdirectory(Thirdparty/g2o)
 
 target_link_libraries(${PROJECT_NAME}
   ${Pangolin_LIBRARIES}

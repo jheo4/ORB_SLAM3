@@ -9,7 +9,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # default built type
 IF(NOT CMAKE_BUILD_TYPE)
-  SET(CMAKE_BUILD_TYPE Release)
+  SET(CMAKE_BUILD_TYPE Debug)
 ENDIF()
 
 MESSAGE(STATUS "BUILD TYPE:" ${CMAKE_BUILD_TYPE})
@@ -29,9 +29,9 @@ IF(WIN32)
 ELSE(WIN32)
   SET(g2o_LIBRARY_OUTPUT_DIRECTORY ${g2o_SOURCE_DIR}/lib CACHE PATH "Target for the libraries")
 ENDIF(WIN32)
-SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${g2o_LIBRARY_OUTPUT_DIRECTORY})
-SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${g2o_LIBRARY_OUTPUT_DIRECTORY})
-SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${g2o_RUNTIME_OUTPUT_DIRECTORY})
+#SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${g2o_LIBRARY_OUTPUT_DIRECTORY})
+#SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${g2o_LIBRARY_OUTPUT_DIRECTORY})
+#SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${g2o_RUNTIME_OUTPUT_DIRECTORY})
 
 # Set search directory for looking for our custom CMake scripts to
 # look for SuiteSparse, QGLViewer, and Eigen3.
@@ -43,6 +43,10 @@ IF(UNIX)
   MESSAGE(STATUS "Compiling on Unix")
 ENDIF(UNIX)
 
+set(G2O_CXX_FLAGS "")
+set(G2O_LINKER_FLAGS "")
+set(G2O_INCLUDE_DIRS "")
+
 # Eigen library parallelise itself, though, presumably due to performance issues
 # OPENMP is experimental. We experienced some slowdown with it
 FIND_PACKAGE(OpenMP)
@@ -51,6 +55,9 @@ IF(OPENMP_FOUND AND G2O_USE_OPENMP)
   SET (G2O_OPENMP 1)
   SET(g2o_C_FLAGS "${g2o_C_FLAGS} ${OpenMP_C_FLAGS}")
   SET(g2o_CXX_FLAGS "${g2o_CXX_FLAGS} -DEIGEN_DONT_PARALLELIZE ${OpenMP_CXX_FLAGS}")
+  list(APPEND G2O_CXX_FLAGS ${g2o_CXX_FLAGS})
+  list(APPEND G2O_CXX_FLAGS -DEIGEN_DONT_PARALLELIZE)
+  list(APPEND G2O_CXX_FLAGS ${OpenMP_CXX_FLAGS})
   MESSAGE(STATUS "Compiling with OpenMP support")
 ENDIF(OPENMP_FOUND AND G2O_USE_OPENMP)
 
@@ -67,6 +74,9 @@ SET(g2o_CXX_FLAGS "${g2o_CXX_FLAGS} -Wall -W")
 # specifying compiler flags
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${g2o_CXX_FLAGS}")
 SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${g2o_C_FLAGS}")
+
+message("g2o_C_FLAGS ${g2o_C_FLAGS}")
+message("g2o_CXX_FLAGS ${g2o_CXX_FLAGS}")
 
 # Find Eigen3
 find_package(PkgConfig REQUIRED)
@@ -86,100 +96,49 @@ ${EIGEN3_INCLUDE_DIRS})
 # Include the subdirectories
 ADD_LIBRARY(g2o ${G2O_LIB_TYPE}
 #types
-g2o/types/types_sba.h
-g2o/types/types_six_dof_expmap.h
 g2o/types/types_sba.cpp
 g2o/types/types_six_dof_expmap.cpp
 g2o/types/types_seven_dof_expmap.cpp
-g2o/types/types_seven_dof_expmap.h
-g2o/types/se3quat.h
-g2o/types/se3_ops.h
-g2o/types/se3_ops.hpp
 #core
-g2o/core/base_edge.h
-g2o/core/base_binary_edge.h
 g2o/core/hyper_graph_action.cpp
 g2o/core/base_binary_edge.hpp
-g2o/core/hyper_graph_action.h
-g2o/core/base_multi_edge.h
 g2o/core/hyper_graph.cpp
-g2o/core/base_multi_edge.hpp
-g2o/core/hyper_graph.h
-g2o/core/base_unary_edge.h
-g2o/core/linear_solver.h
-g2o/core/base_unary_edge.hpp
 g2o/core/marginal_covariance_cholesky.cpp
-g2o/core/base_vertex.h
-g2o/core/marginal_covariance_cholesky.h
-g2o/core/base_vertex.hpp
 g2o/core/matrix_structure.cpp
 g2o/core/batch_stats.cpp
-g2o/core/matrix_structure.h
-g2o/core/batch_stats.h
-g2o/core/openmp_mutex.h
-g2o/core/block_solver.h
-g2o/core/block_solver.hpp
 g2o/core/parameter.cpp
-g2o/core/parameter.h
 g2o/core/cache.cpp
-g2o/core/cache.h
 g2o/core/optimizable_graph.cpp
-g2o/core/optimizable_graph.h
 g2o/core/solver.cpp
-g2o/core/solver.h
-g2o/core/creators.h
 g2o/core/optimization_algorithm_factory.cpp
 g2o/core/estimate_propagator.cpp
-g2o/core/optimization_algorithm_factory.h
-g2o/core/estimate_propagator.h
 g2o/core/factory.cpp
-g2o/core/optimization_algorithm_property.h
-g2o/core/factory.h
-g2o/core/sparse_block_matrix.h
 g2o/core/sparse_optimizer.cpp
 g2o/core/sparse_block_matrix.hpp
-g2o/core/sparse_optimizer.h
 g2o/core/hyper_dijkstra.cpp
-g2o/core/hyper_dijkstra.h
 g2o/core/parameter_container.cpp
-g2o/core/parameter_container.h
 g2o/core/optimization_algorithm.cpp
-g2o/core/optimization_algorithm.h
 g2o/core/optimization_algorithm_with_hessian.cpp
-g2o/core/optimization_algorithm_with_hessian.h
 g2o/core/optimization_algorithm_levenberg.cpp
-g2o/core/optimization_algorithm_levenberg.h
 g2o/core/optimization_algorithm_gauss_newton.cpp
-g2o/core/optimization_algorithm_gauss_newton.h
 g2o/core/jacobian_workspace.cpp
-g2o/core/jacobian_workspace.h
 g2o/core/robust_kernel.cpp
-g2o/core/robust_kernel.h
 g2o/core/robust_kernel_factory.cpp
-g2o/core/robust_kernel_factory.h
 g2o/core/robust_kernel_impl.cpp
-g2o/core/robust_kernel_impl.h
 #stuff
-g2o/stuff/string_tools.h
-g2o/stuff/color_macros.h
-g2o/stuff/macros.h
 g2o/stuff/timeutil.cpp
-g2o/stuff/misc.h
-g2o/stuff/timeutil.h
 g2o/stuff/os_specific.c
-g2o/stuff/os_specific.h
 g2o/stuff/string_tools.cpp
 g2o/stuff/property.cpp
-g2o/stuff/property.h
 )
+
+configure_file("g2o.pc.in" "g2o.pc" @ONLY)
 
 install( DIRECTORY ${CMAKE_SOURCE_DIR}/g2o/stuff   DESTINATION ${CMAKE_INSTALL_PREFIX}/include/ORB_SLAM3/Thirdparty/g2o/g2o)
 install( DIRECTORY ${CMAKE_SOURCE_DIR}/g2o/core    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/ORB_SLAM3/Thirdparty/g2o/g2o)
 install( DIRECTORY ${CMAKE_SOURCE_DIR}/g2o/types   DESTINATION ${CMAKE_INSTALL_PREFIX}/include/ORB_SLAM3/Thirdparty/g2o/g2o)
+install( DIRECTORY ${CMAKE_SOURCE_DIR}/g2o/solvers DESTINATION ${CMAKE_INSTALL_PREFIX}/include/ORB_SLAM3/Thirdparty/g2o/g2o)
 install( FILES ${CMAKE_SOURCE_DIR}/config.h        DESTINATION ${CMAKE_INSTALL_PREFIX}/include/ORB_SLAM3/Thirdparty/g2o)
 install( FILES ${CMAKE_CURRENT_BINARY_DIR}/g2o.pc  DESTINATION /usr/local/lib/pkgconfig/)
 install( TARGETS g2o ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
-
-configure_file("g2o.pc.in" "g2o.pc" @ONLY)
-install( FILES ${CMAKE_CURRENT_BINARY_DIR}/g2o.pc DESTINATION /usr/local/lib/pkgconfig/)
 
